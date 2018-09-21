@@ -14,8 +14,16 @@ function addLevelDBData(key,value){
 }
 
 // Get data from levelDB with key
-async function getLevelDBData(key){
-  return await db.get(key)
+function getLevelDBData(key){
+  return new Promise((resolve, reject) => {
+    db.get(key, function(err, value) {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(value)
+      }
+    })
+  })
 }
 // Add data to levelDB with value
 function addDataToLevelDB(key, value) {
@@ -26,7 +34,7 @@ function addDataToLevelDB(key, value) {
             i++;
             dataArray.push(data)
           }).on('error', function(err) {
-              return console.log('Unable to read data stream!', err)
+            reject(err)
           }).on('close', function() {
             addLevelDBData(key, value)
             resolve(dataArray)
@@ -41,7 +49,7 @@ function getDataArray() {
     db.createReadStream().on('data', function(data) {
           dataArray.push(data)
         }).on('error', function(err) {
-            return console.log('Unable to read data stream!', err)
+          reject(err)
         }).on('close', function() {
           resolve(dataArray)
         });

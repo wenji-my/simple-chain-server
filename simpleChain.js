@@ -59,8 +59,12 @@ class Blockchain{
     // get block
     async getBlock(blockHeight){
       // return object as a single string
-      let blockJson = await levelSandbox.getLevelDBData(blockHeight)
-      return JSON.parse(blockJson);
+      try {
+        let blockJson = await levelSandbox.getLevelDBData(blockHeight)
+        return JSON.parse(blockJson);
+      } catch (error) {
+        return null
+      }
     }
 
     // validate block

@@ -35,4 +35,10 @@ To test code:
   - Example URL path: http://localhost:8000/block/0, where '0' is the block height.
 
 - POST
-  - Example URL path: http://localhost:8000/block
+  - Example URL path: http://localhost:8000/block, and add param like this:
+
+      
+        {
+          "body": "Testing block with test string data"
+        }
+      

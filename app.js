@@ -12,12 +12,20 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.get('/block/:id', async (req, res) => {
   let block = await myBlockChain.getBlock(req.params.id)
-  res.send(JSON.stringify(block))
+  if (block) {
+    res.send(JSON.stringify(block))
+  } else {
+    res.send("Block don't exist!")
+  }
 })
 
 app.post('/block', async (req, res) => {
-  await myBlockChain.addBlock(new Block(req.body.body))
-  res.send(myBlockChain.chain[myBlockChain.chain.length - 1])
+  if (req.body.body) {
+    await myBlockChain.addBlock(new Block(req.body.body))
+    res.send(myBlockChain.chain[myBlockChain.chain.length - 1])
+  } else {
+    res.send("No body in the request parameters!")
+  }
 })
 
 app.listen(8000, () => console.log('listening port 8000'))
